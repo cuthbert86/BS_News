@@ -1,0 +1,13 @@
+{% extends "Content/Base.html" %}
+{% block content %}
+  <h1>News Reports</h1>
+  {% for report in reports %}
+    <div>
+      <a href="{% url 'Content:report_detail' report.pk %}"><h3>{{ report.headline }}</h3></a>
+      <p>{{ report.content }}</p>
+      <small>Submitted by {{ report.author }} on {{ report.todaysDate }}</small>
+    </div>
+  {% empty %}
+    <p>No reports found.</p>
+  {% endfor %}
+{% endblock %}

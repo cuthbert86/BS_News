@@ -1,0 +1,24 @@
+{% extends "Content/Base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+<title>{{title}}</title>
+{% load widget_tweaks %}
+<br>
+<br>
+<br>
+
+<div class="container">
+    <div class="form-group">
+      <title>{{form}}</title>
+        <form method="post" class="form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {{ user.username }}
+            {{ user.password }}                
+            <button type="submit" class="btn">Submit Form</button>
+        </form>
+    </div>
+  </div>
+
+{% endblock content %}

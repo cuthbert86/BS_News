@@ -1,0 +1,32 @@
+{% extends "Content/Base.html" %}
+{% block content %}
+<h1>Welcome to the BS Content Area of The BS News Reporting Network</h1>
+<p>
+Please Register and Login to see the full homepage.
+</p>
+
+{% endblock %}
+</body>
+</html>
+{% block sidebar %} 
+<div class="col-md-4"> 
+
+        <h3>Current Weather</h3> 
+
+        <p class='text-muted'>Cities across United Kingdom 
+
+            <ul class="list-group"> 
+
+                    {% for weather in weather_data %} 
+
+                        <li class="list-group-item list-group-item-light">{{ weather.city }}: {{ weather.description }}, {{ weather.temperature }}&deg;C</li> 
+
+                    {% endfor %} 
+
+            </ul> 
+
+        </p> 
+
+</div> 
+
+{% endblock sidebar %}

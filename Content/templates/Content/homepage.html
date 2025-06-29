@@ -1,0 +1,60 @@
+{% extends "Content/Base.html" %}
+{% block content %}
+<h1>Welcome to The BS News Reporting Network</h1>
+<p>
+Welcome to our news reporting website! We're delighted to have you join our growing community of passionate
+reporters and contributors. This platform is designed for those who are committed to making a difference by 
+sharing stories and updates that matter. Whether you are a seasoned journalist or a newcomer eager to make 
+your voice heard, we hope you find this space both inspiring and empowering as you contribute to a dynamic
+ and ever-evolving news landscape.
+</p>
+<p>
+At the heart of our mission are the pillars of honesty, integrity, and credibility. These values guide 
+every aspect of our reporting process and are what set our platform apart. We believe that truthful and 
+well-researched news is essential for building trust with our audience and for fostering a healthy, 
+informed society. As you prepare your reports, we encourage you to uphold these standards and ensure that 
+your work reflects our shared commitment to responsible journalism.
+</p>
+<p>
+Your engagement plays a vital role in the vibrancy of our website. The more activity we see—whether 
+through uploading reports, sharing insights, or engaging in meaningful discussions—the stronger our community 
+becomes. Every contribution adds value and helps us create a diverse and comprehensive news feed that benefits 
+all who visit the site. We encourage you to be active, support your fellow reporters, and keep the conversation going.
+</p>
+<p>
+This section of our website has been specially designed for news creators like you to upload your reports. Once 
+submitted, your stories will be reviewed and then featured on our live news feed, where they will reach a wider 
+audience. This system ensures that the most up-to-date and relevant news is always available to our readers. If 
+you want to see your work as it appears to the public, be sure to visit our Live News Feed.
+</p>
+<p>
+Finally, we want to remind all contributors that the process and methods behind our news creation are exclusive 
+to this part of the site. Maintaining the confidentiality of our reporting process ensures that our stories 
+remain authentic and unbiased. Let’s work together to keep the inner workings of our newsroom private, so we can 
+continue to deliver trustworthy and impactful news to our audience. Thank you for being part of our mission!
+</p>
+{% endblock %}
+</body>
+</html>
+{% block sidebar %} 
+<div class="col-md-4"> 
+
+        <h3>Current Weather</h3> 
+
+        <p class='text-muted'>Cities across United Kingdom 
+
+            <ul class="list-group"> 
+
+                    {% for weather in weather_data %} 
+
+                        <li class="list-group-item list-group-item-light">{{ weather.city }}: {{ weather.description }}, {{ weather.temperature }}&deg;C</li> 
+
+                    {% endfor %} 
+
+            </ul> 
+
+        </p> 
+
+</div> 
+
+{% endblock sidebar %}

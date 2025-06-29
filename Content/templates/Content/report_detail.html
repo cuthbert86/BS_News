@@ -1,0 +1,24 @@
+{% extends "Content/Base.html" %}
+{% block content %}
+  <h1>BS News Report</h1>
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <td>Headline</td>
+        <td>{{ NewsReport.headline }}</td>
+      </tr>
+      <tr>
+        <td>Content</td>
+        <td>{{ Newsreport.content }}</td>
+      </tr>
+      <tr>
+        <td>Photo</td>
+        <td>{{ Newsreport.photo }}</td>
+      </tr>
+      <tr>
+        <td>Date Reported</td>
+        <td>{{ Newsreport.todaysDate }}</td>
+      </tr>
+    </body>
+  </table>
+{% endblock content %}

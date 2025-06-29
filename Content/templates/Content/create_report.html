@@ -1,0 +1,31 @@
+{% extends "Content/Base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+<title>{{title}}</title>
+{% load widget_tweaks %}
+<br>
+<br> 
+
+<div class = "mt-5 d-flex row justify-content-center">
+    <div class="container-xxl row justify-content-center">
+        <form method = "POST" id='form' class="form-control-lg">    
+        {% csrf_token %}
+            <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Headline</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Local Outrage">
+            {{ newsreport.headline }}
+            </div>
+            <div class="mb-3 form-control-lg">
+            <label form="exampleFormControlTextarea1" class="form-label">Content</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="10">{{ newsreport.content }}</textarea>
+            </div>
+            <button type="submit" class="btn">Submit Report</button>
+           </form>
+        </div>
+     </div>
+    </div>
+</div>
+
+</body>
+{% endblock content %}

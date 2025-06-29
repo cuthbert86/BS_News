@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+{% load static %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+<html>
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> <!-- Compiled and minified JavaScript --> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
+<title>Complete BS Content Online {{title}}</title>
+</head>
+<body>
+<div class="container">
+<header class="site-header">
+<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+<div class="container">
+<a class="navbar-brand mr-4" href="{% url 'homepage' %}">BS Content Services for Creatives</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarToggle">
+<div class="navbar-nav mr-auto">
+<a class="nav-item nav-link" href="{% url 'homepage'%}">Home Page</a>
+<a class="nav-item nav-link" href="{% url 'about_BS'%}">About BS Content</a>
+<a class="nav-item nav-link" href="{% url 'report'%}">Latest BS Content</a>
+<a class="nav-item nav-link" href="{% url 'contact'%}">Contact Page</a>
+<a class="nav-item nav-link" href="{% url 'BS_News/Frontpage'%}">Latest News Report Frontpage Feed</a>
+</div>
+<!-- Navbar Right Side -->
+<div class="navbar-nav">
+    {% if user.is_authenticated %}
+    <a class="nav-item nav-link" href="{% url 'BS_Content:issue_create'%}">Create New BS News Report</a>
+    <form method="post" id="frm_logout" action="{% url 'logout'%}"
+    style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="nav-item nav-link"
+    style="background:none; border:none; cursor:pointer;">Logout</button>
+    </form>
+    {% else %}
+    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+    <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+    <a class="nav-item nav-link" href="{% url 'profile' %}">Update Profile</a>
+    {% endif %}
+    </div>
+</div>
+</div>
+</nav>
+</header>
+<div class="row">
+<div class="col-md-8">
+{% block content %}{% endblock %}
+</div>
+{% block sidebar %}{% endblock %}
+<div class="col-md-4">
+<div class="content-section">
+<h3>The Latest Upto date BS Online Content</h3>
+<p class='text-muted'>This web-app is where people can transform their lives from being a passive submissive recepticle into an active creative producer of news, events and current affairs
+ and contributors can submit their BS News articles, submit your content here and when it's approved by the BS IT Administrator.
+<ul class="list-group">
+<li class="list-group-item list-group-item-light"><a href="{% url 'Latest_BS_content' %}">Latest BS News Reported Online</a></li>
+<li class="list-group-item list-group-item-light"> <a href="{% url 'policies' %}">BS News Publishing Policies</a></li>
+<li class="list-group-item list-group-item-light"><a href="{% url 'about' %}">About BS Content</a></li>
+<li class="list-group-item list-group-item-light"><a href="{% url 'contact' %}">Contact Page</a></li>
+<li class="list-group-item list-group-item-light"><a href="{% url '' %}"></a></li>
+<li class="list-group-item list-group-item-light"><a href="{% url '' %}"></a></li>
+<li class="list-group-item list-group-item-light"><a href="{% url '' %}"></a></li>
+</ul>
+</p>
+</div>
+</div>
+</div>
+</div>
+</html>

@@ -1,0 +1,30 @@
+{% extends "Content/Base.html" %}
+{% block content %}
+<body>
+    <div class="container">
+        <h1>Contact The On call IT Administrator of BS Content</h1>
+        <form method="post" action="{% url 'contact' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_name">Name:</label>
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <label for="id_subject">Subject:</label>
+                {{ form.subject }}
+            </div>
+            <div class="form-group">
+                <label for="id_message">Message:</label>
+                {{ form.message }}
+            </div>
+            <div class="form-group">
+                <button type="submit">Send</button>
+            </div>
+        </form>
+    </div>
+</body>
+{% endblock content %}

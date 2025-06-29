@@ -1,0 +1,11 @@
+{% extends "Content/base.html" %}
+{% block content %}
+  <div class="jumbotron">
+    <h1 class="display-4">Hello {{ request.Author.user }}!!!</h1>
+    <p class="lead">Registration Form Successfull!</p>
+    <br>
+    <br/>
+    <hr class="my-4">
+    <a class="btn btn-secondary btn-lg" href="{% url 'BS_Content/latest_news_reports' %}" role="button">View the Latest BS News Reports</a>
+  </div>
+{% endblock content %}
