@@ -13,20 +13,24 @@ from django.utils.translation import gettext_lazy as _
 
 class NewsReport(models.Model):
     headline = models.CharField(primary_key=True, max_length=100, default='')
-    todaysDate = models.DateField(auto_now_add=True)
+    todaysDate = models.DateTimeField(
+        auto_now_add=True)
     author = models.ForeignKey(
         User, related_name='user', on_delete=models.CASCADE,)
     content = models.TextField(max_length=500, default='')
     photo = models.ImageField(upload_to='media/photo', default='busgate.jpg')
-    is_approved = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=True)
 
     def publish(self):
         self.todaysDate = datetime.now()
         self.save()
         return f'{self.todaysDate}'
-        
+
     def __str__(self):
-        return f'{self.headline}'
+        return f'{self.todaysDate} + {self.author}'
+
+    def get_absolute_url(self):
+        return reverse('Content/newsreport_detail', kwargs={'pk': self.pk})
 
 
 class LatestNews(models.Model):

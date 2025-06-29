@@ -9,19 +9,17 @@
 
 <div class = "mt-5 d-flex row justify-content-center">
     <div class="container-xxl row justify-content-center">
-        <form method = "POST" id='form' class="form-control-lg">    
+    <form method="POST">
         {% csrf_token %}
-            <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Headline</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Local Outrage">
-            {{ newsreport.headline }}
+            <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create BS News Report</legend>
+            {{ form.as_p }}
+            </fieldset>
+            <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Send</button>
             </div>
-            <div class="mb-3 form-control-lg">
-            <label form="exampleFormControlTextarea1" class="form-label">Content</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="10">{{ newsreport.content }}</textarea>
-            </div>
-            <button type="submit" class="btn">Submit Report</button>
-           </form>
+        </form>
+    
         </div>
      </div>
     </div>

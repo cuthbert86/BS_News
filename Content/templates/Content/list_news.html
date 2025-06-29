@@ -1,18 +1,13 @@
 {% extends "Content/Base.html" %}
 {% block content %}
-
-<ul> 
-    <!-- Iterate over object_list -->
-    {% for NewsReport in qs %} 
-    <!-- Display Objects -->
-    <li>{{ NewsReport.headline }}</li> 
-    <li>{{ NewsReport.content }}</li> 
-  
-    <hr/> 
-    <!-- If object_list is empty  -->
-    {% empty %} 
-    <li>No objects yet.</li> 
-    {% endfor %} 
-</ul>
-
+  <h1>News Reports</h1>
+  {% for report in reports %}
+    <div>
+      <a href="{% url 'Content:report_detail' %}"><h3>{{ report.headline }}</h3></a>
+      <p>{{ report.content }}</p>
+      <small>Submitted by {{ report.author }} on {{ report.todaysDate }}</small>
+    </div>
+  {% empty %}
+    <p>No reports found.</p>
+  {% endfor %}
 {% endblock %}

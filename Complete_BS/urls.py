@@ -23,11 +23,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 # from Content import views as Content_views
 # from Content.views import send_mail
-#from BS_News import views as BS_news
-#from BS_News.urls import urlpatterns as urls
-from users.forms import NewPasswordChangeForm
+# from BS_News import views as BS_news
+# from BS_News.urls import urlpatterns as urls
+# from users.forms import NewPasswordChangeForm
 from Content.urls import urlpatterns as urls
-from Content import forms
+# from Content import forms
 from Content.views import home, homepage, policies
 
 

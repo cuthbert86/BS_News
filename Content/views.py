@@ -70,7 +70,7 @@ def homepage(request):
 def report_list(request):
     reports = NewsReport.objects.all()
     context = {'reports': reports}
-    return render(request, 'Content/report_list.html', context)
+    return render(request, 'Content/list_news.html', context)
 
 
 class NewsReportDetail(DetailView):
@@ -91,7 +91,7 @@ class NewsReportDetail(DetailView):
 
 
 @login_required
-def report_detail(request, pk):
+def newsreport_detail(request, pk):
     report = get_object_or_404(NewsReport, pk=pk)
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -136,8 +136,8 @@ def create_report(request):
     if request.method == 'POST':
         form = NewsReportForm(request.POST, request.FILES)
         if form.is_valid():
-            news_report = form.save(commit=False)
-            news_report.author = request.user  # Set author as current user
+            news_report = form.save(commit=True)
+            news_report.author = request.usere  # Set author as current user
             # is_approved remains False by default
             news_report.save()
             return redirect('Content/homepage')  # Change to your homepage url name
@@ -219,6 +219,7 @@ def send_mail1(request):
     return render(request, "email.html", context)
 
 
+@login_required
 def report_detail(request, slug):
     # Filter posts based on the slug (case-insensitive)
     q = ContactSubmission.objects.filter(slug__iexact=slug)
