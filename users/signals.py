@@ -1,9 +1,9 @@
-from django.db.models.signals import post_save, pre_delete, pre_save
+from django.db.models.signals import post_save, pre_delete, pre_save, post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.core.mail import mail_admins
-from .models import Author
-from Content.models import NewsReport
+from .models import Author, Profile
+from Content.models import NewsReport, LatestNews
 
 
 @receiver(post_save, sender=Author)
@@ -32,5 +32,4 @@ def notify_admin_new_report(sender, instance, created, **kwargs):
             subject="New Report Submitted",
             message=f"A new report (ID: {instance.headline}) has been submitted by {instance.user.username} and is awaiting approval."
         )
-
-
+        

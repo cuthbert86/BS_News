@@ -6,7 +6,7 @@ from datetime import datetime
 from django.conf import settings
 from rest_framework import serializers
 from django.urls import reverse
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
@@ -20,17 +20,26 @@ class NewsReport(models.Model):
     content = models.TextField(max_length=500, default='')
     photo = models.ImageField(upload_to='media/photo', default='busgate.jpg')
     is_approved = models.BooleanField(default=True)
+    slug = models.SlugField(max_length=100, null=True, blank=True, unique=True) 
 
     def publish(self):
         self.todaysDate = datetime.now()
         self.save()
-        return f'{self.todaysDate}'
 
     def __str__(self):
         return f'{self.todaysDate} + {self.author}'
 
     def get_absolute_url(self):
-        return reverse('Content/newsreport_detail', kwargs={'pk': self.pk})
+        return reverse('Content/report_detail', kwargs={"slug": self.slug})
+
+    class Meta:
+        get_latest_by = "todaysDate"
+
+
+@receiver(pre_save, sender=NewsReport)
+def pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
 
 
 class LatestNews(models.Model):
@@ -41,14 +50,23 @@ class LatestNews(models.Model):
     content = models.TextField(max_length=500, default='')
     photo = models.ImageField(upload_to='media/photo', default='busgate.jpg')
     is_approved = models.BooleanField(default=True)
+    slug = models.SlugField(max_length=100, null=True, blank=True, unique=True)
 
     def publish(self):
         self.Date = datetime.now()
         self.save()
-        return f'{self.Date}'
 
     def __str__(self):
         return f'{self.title}'
+
+    class Meta:
+        get_latest_by = "Date"
+
+
+@receiver(pre_save, sender=LatestNews)
+def pre_save_receiver1(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator1(instance)
 
 
 class ContactSubmission(models.Model):
@@ -57,12 +75,6 @@ class ContactSubmission(models.Model):
     email = models.EmailField(max_length=50, default='')
     subject = models.CharField(max_length=50, default='')
     message = models.TextField(max_length=300, default='')
-    slug = models.SlugField(max_length=25, null=True, blank=True)
 
     def __str__(self):
         return f'{self.Date} - {self.subject}'
-
-#    @receiver(pre_save, sender=ContactSubmission)
-#    def pre_save_receiver(sender, instance, *args, **kwargs):
-#        if not instance.slug:
-#            instance.slug = unique_slug_generator(instance)

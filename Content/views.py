@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound
-from .models import NewsReport, ContactSubmission
+from .models import NewsReport, ContactSubmission, LatestNews
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -11,7 +11,7 @@ from django.template.loader import get_template
 from django.template import Context
 import requests
 from django.core.mail import send_mail
-from users.models import Author
+from users.models import Author, Profile
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import DeleteView, UpdateView
 from .forms import NewsReportForm, ContactForm, EditNewsReportForm
@@ -100,6 +100,21 @@ def newsreport_detail(request, pk):
         NewsReport.todaysDate = request.POST.get('todaysDate')
         NewsReport.content = request.POST.get('content')
         NewsReport.photo = request.POST.get('photo')
+        NewsReport.slug = request.Post.get('slug')
+    return render(request, 'Content/report_detail', {'report': report})
+
+
+@login_required
+def latest_news_detail(request, pk):
+    report = get_object_or_404(LatestNews, pk=pk)
+    if request.method != "POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        LatestNews.title = request.POST.get('title')
+        LatestNews.Date = request.POST.get('Date')
+        LatestNews.content = request.POST.get('content')
+        LatestNews.photo = request.POST.get('photo')
+        LatestNews.slug = request.Post.get('slug')
     return render(request, 'Content/report_detail', {'report': report})
 
 
@@ -111,7 +126,8 @@ class EditNewsReportView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             'photo',
             'is_approved',
             'author',
-            'todaysDate'
+            'todaysDate',
+            'slug',
             ]
 
     @login_required
@@ -197,6 +213,24 @@ class ContactCreateView(CreateView, FormView):
         return (self.request.path, 'Content/success.html')
 
 
+class LatestNewsCreateView(CreateView, FormView):
+    model = LatestNews
+    form = NewsReportForm
+    success_url = 'homepage'
+    template_name = 'Content/create_report.html'
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.warning(self.request, 'Unable to send the enquiry')
+        return super().form_invalid(form)
+
+    @login_required
+    def get_success_url(self):
+        return (self.request.path, 'homepage')
+
+
 @login_required
 def send_mail1(request):
     context = {}
@@ -222,7 +256,7 @@ def send_mail1(request):
 @login_required
 def report_detail(request, slug):
     # Filter posts based on the slug (case-insensitive)
-    q = ContactSubmission.objects.filter(slug__iexact=slug)
+    q = NewsReport.objects.filter(slug__iexact=slug)
 
     if q.exists():
         # If a post with the given slug exists, retrieve the first matching post
@@ -232,10 +266,10 @@ def report_detail(request, slug):
         return HttpResponse('<h1>Post Not Found</h1>')
 
     # Create a context dictionary containing the retrieved post
-    context = {'contact': q}
+    context = {'NewsReport': q}
 
     # Render the 'details.html' template with the context
-    return render(request, 'Content/contact_detail.html', context)
+    return render(request, 'Content/report_detail.html', context)
 
 
 class NewsViewSet(viewsets.ModelViewSet):
