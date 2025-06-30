@@ -2,23 +2,24 @@
 {% block content %}
   <h1>BS News Report</h1>
   <table class="table table-striped">
-    <tbody>
+ 
       <tr>
         <td>Headline</td>
-        <td>{{ NewsReport.headline }}</td>
+        <td>{{ report.headline }}</td>
       </tr>
       <tr>
         <td>Content</td>
-        <td>{{ Newsreport.content }}</td>
+        <td>{{ report.content }}</td>
       </tr>
       <tr>
         <td>Photo</td>
-        <td>{{ Newsreport.photo }}</td>
+        <td>{{ report.photo }}</td>
       </tr>
       <tr>
-        <td>Date Reported</td>
-        <td>{{ Newsreport.todaysDate }}</td>
+        <td>Date of BS News Report</td>
+        <td>{{ report.todaysdate }}</td>  
+        {{ report.slug }} {{ report.is_approved }}
       </tr>
-    </body>
+  
   </table>
 {% endblock content %}

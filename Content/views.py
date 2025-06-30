@@ -76,11 +76,10 @@ def report_list(request):
 @login_required
 class NewsReportDetail(DetailView):
     model = NewsReport
-    template_name = "Content/report_detail.html"
+    template_name = "news_report_detail.html"
     context_object_name = "report"
     slug_field = "slug"
     slug_url_kwarg = "slug"
-    order_by = 'todaysDate'
 
 
 @login_required
@@ -251,7 +250,7 @@ def report_detail(request, slug):
     context = {'NewsReport': q}
 
     # Render the 'details.html' template with the context
-    return render(request, 'Content/report_detail.html', context)
+    return render(request, 'Content/news_report_detail.html', context)
 
 
 class NewsViewSet(viewsets.ModelViewSet):

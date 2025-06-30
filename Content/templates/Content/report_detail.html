@@ -9,12 +9,13 @@
   <div class="content-section">
   <div class="container">
   <p>{{ report.content }}</P>
-     {{ report.photo }}
+      {{ report.photo }}
   </div>
 </div>
 </div>
 <br>
 <br>
 <br>
-<p>Reported on {{ report.todaysDate }} by {{ report.author }}</p>
+<p>Reported on {{ report.todaysdate }} by {{ report.author }} {{ report.slug }} {{ report.is_approved }}</p>
+
 {% endblock content %}

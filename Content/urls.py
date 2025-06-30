@@ -9,6 +9,7 @@ from Content.views import BSReportDeleteView, BSReportUpdateView, about_BS
 from Content.views import ContactCreateView, create_report, report_list
 from Content.views import EditNewsReportView, NewsViewSet
 from Content import views
+from Content.models import NewsReport
 from rest_framework.routers import DefaultRouter
 from django.conf.urls.static import static
 from django.conf import settings
@@ -31,12 +32,12 @@ urlpatterns = [
         template_name='contact_create.html'), name='contact_create'),
     path('Content/create_report', create_report, name='create_report'),
     path('Content/report_list', report_list, name='report_list'),
-    path("Content/<slug:slug>/", NewsReportDetail.as_view(
-        template_name='news_report_detail.html'), name="news_report_detail"),
+    path("Content/<slug:slug>/", NewsReportDetail,
+         name="news_report_detail"),
     path('', include(router.urls)),
     path('Content/send_mail1', send_mail1, name='email'),
     path('Content/EditNewsReportView', EditNewsReportView.as_view(
         template_name='edit_report.html'), name='edit_report'),
-    path('Content/<slug:slug>/', report_detail, name='report_detail'),
+    re_path('Content/<slug:slug>/', report_detail, name='report_detail'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
