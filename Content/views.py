@@ -11,7 +11,7 @@ from django.template.loader import get_template
 from django.template import Context
 import requests
 from django.core.mail import send_mail
-from users.models import Author, Profile
+from users.models import Author
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import DeleteView, UpdateView
 from .forms import NewsReportForm, ContactForm, EditNewsReportForm
@@ -68,11 +68,12 @@ def homepage(request):
 
 @login_required
 def report_list(request):
-    reports = NewsReport.objects.all()
+    reports = NewsReport.objects.all().order_by('todaysDate')
     context = {'reports': reports}
     return render(request, 'Content/list_news.html', context)
 
 
+@login_required
 class NewsReportDetail(DetailView):
     model = NewsReport
     template_name = "Content/report_detail.html"
@@ -80,8 +81,6 @@ class NewsReportDetail(DetailView):
     slug_field = "slug"
     slug_url_kwarg = "slug"
     order_by = 'todaysDate'
-
-
 
 
 @login_required
@@ -95,20 +94,7 @@ def newsreport_detail(request, pk):
         NewsReport.content = request.POST.get('content')
         NewsReport.photo = request.POST.get('photo')
         NewsReport.slug = request.Post.get('slug')
-    return render(request, 'Content/report_detail', {'report': report})
-
-
-@login_required
-def latest_news_detail(request, pk):
-    report = get_object_or_404(LatestNews, pk=pk)
-    if request.method != "POST":
-        return HttpResponse("<h2>Method Not Allowed</h2>")
-    else:
-        LatestNews.title = request.POST.get('title')
-        LatestNews.Date = request.POST.get('Date')
-        LatestNews.content = request.POST.get('content')
-        LatestNews.photo = request.POST.get('photo')
-        LatestNews.slug = request.Post.get('slug')
+        NewsReport.author = request.Post.get('author')
     return render(request, 'Content/report_detail', {'report': report})
 
 
@@ -137,7 +123,8 @@ class EditNewsReportView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return render(request, 'Content/edit_report.html', {'form': form})
 
 
-def success_view(request):
+@login_required
+def success(request):
     return render(request, 'Content/success.html')
 
 
@@ -149,7 +136,7 @@ def create_report(request):
             news_report = form.save(commit=True)
             # is_approved remains False by default
             news_report.save()
-            return redirect('Content/homepage')  # Change to your homepage url name
+            return redirect('homepage')  # Change to your homepage url name
     else:
         form = NewsReportForm()
     return render(request, 'Content/create_report.html', {'form': form})
@@ -167,33 +154,34 @@ def policies(request):
 
 class BSReportUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = NewsReport
-    fields = ['headline', 'content', 'photo']
-    success_url = 'Content/homepage'
+    fields = ['headline', 'content', 'photo', 'is_approved', 'author', 'todaysDate', 'slug']
+    success_url = 'homepage'
     template_name = 'Content/create_news_report.html'
 
     @login_required
     def test_func2(self):
         newsreport = self.get_object()
-        return self.request.user == newsreport.author
+        return self.request.username == newsreport.author
 
 
 class BSReportDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = NewsReport
     form_class = NewsReportForm
-    success_url = 'Content/homepage'
+    success_url = 'homepage'
 
     @login_required
     def test_func3(self):
         newsreport = self.get_object()
-        return self.request.user == newsreport.author
+        return self.request.username == newsreport.author
 
 
 class ContactCreateView(CreateView, FormView):
     model = ContactSubmission
     form = ContactForm
-    success_url = 'Content/success'
+    success_url = 'success'
     template_name = 'Content/contact_create.html'
-
+    context = {'form': form}
+    
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -203,13 +191,14 @@ class ContactCreateView(CreateView, FormView):
 
     @login_required
     def get_success_url(self):
-        return (self.request.path, 'Content/success.html')
+        return (self.request.path, 'success')
 
 
+@login_required
 class LatestNewsCreateView(CreateView, FormView):
     model = LatestNews
     form = NewsReportForm
-    success_url = 'homepage'
+    success_url = 'success'
     template_name = 'Content/create_report.html'
 
     def form_valid(self, form):
@@ -221,7 +210,7 @@ class LatestNewsCreateView(CreateView, FormView):
 
     @login_required
     def get_success_url(self):
-        return (self.request.path, 'homepage')
+        return (self.request.path, 'success')
 
 
 @login_required

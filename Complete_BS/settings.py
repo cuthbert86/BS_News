@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
     'widget_tweaks',
+    'tinymce',
 ]
 
 
@@ -159,30 +160,39 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'bainescuthbert@gmail.com'
 EMAIL_HOST_PASSWORD = "vxdy mpes bucl cyul"
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 360,
+    'width': '100%',
+    'plugins':
+        'advlist autolink lists link image charmap print preview anchor',
+    'toolbar': 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image',
+    }
+
 
 LOGGING = {
-     'version': 1,
-    'disable_existing_loggers': False, 
+    'version': 1,
+    'disable_existing_loggers': False,
     'handlers': {
-        'console': {           
-             'class': 'logging.StreamHandler', 
+        'console': {
+                'class': 'logging.StreamHandler',
         },
-    }, 
+    },
     'loggers': {
-         'django': { 
-            'handlers': ['console'], 
-            'level': 'INFO',
-        }, 
-        'myapp': { 
+        'django': {
             'handlers': ['console'],
-            'level': 'DEBUG', 
+            'level': 'INFO',
+        },
+        'myapp': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
         },
     },
 }
+
+
 import logging
 
 logger = logging.getLogger(__name__)
-
 
 def my_view(request):
     logger.debug("This is a debug message")

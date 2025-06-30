@@ -16,13 +16,3 @@ class Author(models.Model):
     def __str__(self):
         return f'{self.username}'
 
-
-class Profile(models.Model):
-    reporter = models.CharField(primary_key=True,
-                                max_length=30, default='')
-    name = models.CharField(max_length=30, default='')
-    email = models.EmailField(max_length=100, default='')
-    is_approved = models.BooleanField(default=True)
-
-    def __str__(self):
-        return f'{self.reporter}'

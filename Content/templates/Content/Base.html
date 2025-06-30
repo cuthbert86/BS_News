@@ -41,7 +41,7 @@ crossorigin="anonymous">
     {% else %}
     <li><a class="nav-item nav-link alert-link" href="{% url 'login' %}">Login</a></li>
     <li><a class="nav-item nav-link alert-link" href="{% url 'register' %}">Register</a></li>
-    <li><a class="nav-item nav-link alert-link" href="{% url 'register_profile' %}">Update Profile</a></li>
+    <li><a class="nav-item nav-link alert-link" href="{% url 'register' %}">Update Profile</a></li>
     {% endif %}
     <li><label class="switch"><input type="checkbox" id="darkModeToggle"><span class="slider round"></span></label></li>
 </ul>

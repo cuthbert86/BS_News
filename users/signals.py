@@ -3,7 +3,7 @@ from django.db.models.signals import pre_save, post_save, post_migrate
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.core.mail import mail_admins
-from .models import Author, Profile
+from .models import Author
 from Content.models import NewsReport, LatestNews
 from django.contrib.auth import get_user_model
 
@@ -13,7 +13,7 @@ def create_superuser(sender, **kwargs):
     Author = get_user_model()
     if not Author.objects.filter(username='CuthbertBaines').exists():
         Author.objects.create_superuser(
-            'Cuthbert', 'cuthbert.corp@gmail.com', 'Burngreave1986')
+            'CuthbertBaines', 'cuthbert.corp@gmail.com', 'Burngreave1986')
 
 
 @receiver(post_save, sender=Author)

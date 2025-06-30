@@ -10,39 +10,46 @@ from users.models import Author
 from django.core.mail import send_mail
 
 
+@login_required
 class NewsReportForm(forms.ModelForm):
     class Meta:
         model = NewsReport
         fields = ['headline', 'content', 'photo']
 
 
+@login_required
 class EditNewsReportForm(forms.ModelForm):
     model = NewsReport
-    fields = [
-            'headline',
-            'content',
-            'photo',
-            'is_approved',
-            'author',
-            'todaysDate'
-            ]
+    fields = "__all__"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout()
         Fieldset(
-            'headline', 
-            'content',   
-            'photo', 
-            'is_approved', 
+            'headline',
+            'content',
+            'photo',
+            'is_approved',
             'author',
             'todaysDate'
+            'slug'
             ),
-        Submit('submit', 'Submit', css_class='button white'),
+        Submit('submit', 'Submit', css_class='button white')
 
 
 class ContactForm(forms.ModelForm):
-    class Meta:
-        model = ContactSubmission
-        fields = ['subject', 'name', 'message', 'email']
+    model = ContactSubmission
+    fields = ['subject', 'name', 'message', 'email']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout()
+        Fieldset(
+            'subject',
+            'name',
+            'message',
+            'email',
+            ),
+        Submit('submit', 'Submit', css_class='button white')

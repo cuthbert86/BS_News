@@ -1,6 +1,5 @@
 {% extends "Content/Base.html" %}
 {% block content %}
-<body>
     <div class="container">
         <h1>Contact The BS Content IT Administrator Services:</h1>
         <form method="post" action="{% url 'Content:contact_create' %}">
@@ -22,9 +21,8 @@
                 {{ form.message }}
             </div>
             <div class="form-group">
-                <button type="submit">Send</button>
+                <button type="submit">Send Message to IT Admin</button>
             </div>
         </form>
     </div>
-</body>
 {% endblock content %}

@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include, reverse_lazy, re_path
+from django.urls import path, include, reverse_lazy, re_path, reverse
 from users import views as user_views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
@@ -25,7 +25,7 @@ from Content import views as Content_views
 # from Content.views import send_mail
 # from BS_News import views as BS_news
 # from BS_News.urls import urlpatterns as urls
-# from users.forms import NewPasswordChangeForm
+from users.forms import NewPasswordChangeForm
 from Content.urls import urlpatterns as urls
 # from Content import forms
 from Content.views import home, homepage, policies
@@ -33,6 +33,7 @@ from Content.views import home, homepage, policies
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('tinymce/', include('tinymce.urls')),
     path('', home, name='home'),
     path('homepage', homepage, name='homepage'),
     path('policies', policies, name='policies'),
@@ -40,8 +41,8 @@ urlpatterns = [
 #    path('__debug__/', include('debug_toolbar.urls')),
     path('users/register', user_views.register, name='register'),
  #   path('users/profile', user_views.profile, name='profile'),
-    path('users/register_profile', user_views.register_profile,
-         name='register_profile'),
+#    path('users/register_profile', user_views.register_profile,
+#         name='register_profile'),
 #    path('users/logout_view', user_views.logout_view, name='logout'),
     path('login',
          auth_views.LoginView.as_view(template_name='Content/login.html'),
