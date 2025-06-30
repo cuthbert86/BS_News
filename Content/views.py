@@ -63,7 +63,7 @@ def homepage(request):
     }
     weather_data.append(weather) # Add the data for the current city into our list
 
-    return render(request, 'Content/home.html', {'title': 'Homepage', 'weather_data': weather_data})
+    return render(request, 'Content/homepage.html', {'title': 'Homepage', 'weather_data': weather_data})
 
 
 @login_required
@@ -75,19 +75,13 @@ def report_list(request):
 
 class NewsReportDetail(DetailView):
     model = NewsReport
-    fields = ['headline', 'todaysDate', 'author', 'content', 'photo']
+    template_name = "Content/report_detail.html"
+    context_object_name = "report"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    order_by = 'todaysDate'
 
-    @login_required
-    def news_report_detail(request, model):
-        context = {NewsReport.objects.get()}
-        if request.method != "POST":
-            return HttpResponse("<h2>Method Not Allowed</h2>")
-        else:
-            NewsReport.headline = request.POST.get('headline')
-            NewsReport.todaysDate = request.POST.get('todaysDate')
-            NewsReport.content = request.POST.get('content')
-            NewsReport.photo = request.POST.get('photo')
-        return render(request, "Content/report_detail.html", context)
+
 
 
 @login_required
@@ -153,7 +147,6 @@ def create_report(request):
         form = NewsReportForm(request.POST, request.FILES)
         if form.is_valid():
             news_report = form.save(commit=True)
-            news_report.author = request.usere  # Set author as current user
             # is_approved remains False by default
             news_report.save()
             return redirect('Content/homepage')  # Change to your homepage url name

@@ -1,24 +1,20 @@
 {% extends "Content/Base.html" %}
 {% block content %}
-  <h1>BS News Report</h1>
-  <table class="table table-striped">
-    <tbody>
-      <tr>
-        <td>Headline</td>
-        <td>{{ NewsReport.headline }}</td>
-      </tr>
-      <tr>
-        <td>Content</td>
-        <td>{{ Newsreport.content }}</td>
-      </tr>
-      <tr>
-        <td>Photo</td>
-        <td>{{ Newsreport.photo }}</td>
-      </tr>
-      <tr>
-        <td>Date Reported</td>
-        <td>{{ Newsreport.todaysDate }}</td>
-      </tr>
-    </body>
-  </table>
+  <h4>Online On Demand BS News Service</h4>
+  <br>
+  <title class ="row justify-content-center"><h1>{{ report.headline }}</h1></title>
+  <br>
+  <br>
+  <div class="row justify-content-center">
+  <div class="content-section">
+  <div class="container">
+  <p>{{ report.content }}</P>
+     {{ report.photo }}
+  </div>
+</div>
+</div>
+<br>
+<br>
+<br>
+<p>Reported on {{ report.todaysDate }} by {{ report.author }}</p>
 {% endblock content %}

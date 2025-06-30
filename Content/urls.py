@@ -34,9 +34,8 @@ urlpatterns = [
         template_name='contact_create.html'), name='contact_create'),
     path('Content/create_report', create_report, name='create_report'),
     path('Content/report_list', report_list, name='report_list'),
-    path('Content/<slug:slug>/', report_detail, name='report_detail'),
-    path("Content/<int:pk>", NewsReportDetail.as_view(
-        template_name='news_report_detail.html'), name="news_report_detail"),
+    path("Content/<slug:slug>/", NewsReportDetail.as_view(
+        template_name='news_report_detail.html'), name="report_detail"),
     path('', include(router.urls)),
     path('Content/send_mail1', send_mail1, name='email'),
     path('Content/EditNewsReportView', EditNewsReportView.as_view(
