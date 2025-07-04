@@ -13,6 +13,10 @@ from django.dispatch import receiver
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic import DeleteView, FormView
 from django.http import HttpResponse
+from django.template.loader import get_template
+from django.template import Context
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 
 
 def login_view(request):
@@ -49,14 +53,14 @@ def logout_view(request):
     logout(request)
     return redirect('homepage')
 
-
+"""
 def register(request):
     if request.method == 'POST':
-        u_form = UserRegisterForm(request.POST)
-        if u_form.is_valid():
-            u_form.save()
-            username = u_form.cleaned_data.get('username')
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
+            
             return redirect('homepage')
 
         else:
@@ -64,6 +68,32 @@ def register(request):
     else:
         form = UserRegisterForm(UserCreationForm)
     return render(request, 'Content/register.html', {'form': form, 'title': 'Author Registration'})
+"""
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            ######################### mail system #################################### 
+            htmly = get_template('Content/Email.html')
+            d = { 'username': username }
+            subject, from_email, to = 'welcome', 'your_email@gmail.com', email
+            html_content = htmly.render(d)
+            msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+            ################################################################## 
+            messages.success(request, f'Your account has been created ! You are now able to log in')
+            return redirect('login')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'Content/register.html', {'form': form, 'title':'register here'})
+
+
 
 
 @receiver(post_save, sender=Author)
@@ -75,7 +105,6 @@ def created_author(sender, instance, created, **kwargs):
 @login_required
 class PunterUpdateView(LoginRequiredMixin, UserPassesTestMixin,
                        UpdateView, FormView):
-
     model = Author
     form_class = ProfileUpdateForm
     fields = "__all__"
@@ -93,3 +122,36 @@ class PunterUpdateView(LoginRequiredMixin, UserPassesTestMixin,
             form = ProfileUpdateForm()
 
         return render(request, 'Content/register.html', {'form': form})
+
+
+class UserCreateView(CreateView, FormView):
+    model = Author
+    form = UserRegisterForm
+    fields = ['username', 'name', 'email']
+    context_object_name = 'user'
+    success_url = 'success'
+    template_name = 'Content/registration.html'
+
+    def user_register(self, form, request):
+        if request.method == 'POST':
+            form = form(request.POST or None)
+        if form.form_valid():
+            form.save()  # Save the module to the database
+            return redirect(request, 'homepage')  # Redirect to the module list page or any other page
+        else:
+            form = form()
+
+        return render(request, 'Content/register.html', {'form': form})
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.warning(self.request, 'Unable to send the enquiry')
+        return super().form_invalid(form)
+
+    @login_required
+    def get_success_url(self):
+        return (self.request.path, 'success')
+    
+    

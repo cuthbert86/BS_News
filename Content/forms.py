@@ -48,10 +48,14 @@ class ContactForm(forms.ModelForm):
         Submit('submit', 'Submit', css_class='button white')
 
 
-@login_required
 class NewsReportForm(forms.ModelForm):
-    model = NewsReport
-    fields = ['headline', 'content', 'photo']
+    headline = forms.CharField(label='Headline')
+    content = forms.Textarea()
+    photo = forms.ImageField(label='upload photo')
+
+    class Meta:
+        model = NewsReport
+        fields = ['headline', 'content', 'photo']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

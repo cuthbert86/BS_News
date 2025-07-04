@@ -17,23 +17,24 @@ from PIL import Image
 class NewsReport(models.Model):
     headline = models.TextField(primary_key=True, max_length=100, default='')
     todaysDate = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, default='')
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, default='')
     content = models.TextField(max_length=500, default='')
     photo = models.ImageField(upload_to='media/photo', default='')
     is_approved = models.BooleanField(default=True)
-    slug = models.CharField(max_length=100, null=True, blank=True)
+    slug = models.SlugField(max_length=100, null=True, blank=True, unique=True)
 
     def publish(self):
         self.todaysDate = datetime.now()
         self.save
 
     def get_absolute_url(self):
-        return reverse('Content/report_detail,html', kwargs={"slug": self.slug})
+        return reverse('Content/report_detail,html',
+                       kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.headline)
-        return super(NewsReport, self).save(*args, **kwargs)
+        value = self.headline
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
 
 """
 @receiver(pre_save, sender=NewsReport)

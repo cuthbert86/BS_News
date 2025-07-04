@@ -64,3 +64,21 @@ class UserUpdateForm(ModelForm, LoginRequiredMixin):
 class LoginForm(AuthenticationForm):
     username = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+
+"""
+class NewsReportForm(forms.ModelForm):
+    model = NewsReport
+    fields = ['headline', 'content', 'photo']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout()
+        Fieldset(
+            'headline',
+            'content',
+            'photo',
+            ),
+        Submit('submit', 'Submit', css_class='button white')
+        """

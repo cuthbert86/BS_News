@@ -74,15 +74,6 @@ def report_list(request):
 
 
 @login_required
-class NewsReportDetail(DetailView):
-    model = NewsReport
-    template_name = "news_report_detail.html"
-    context_object_name = "report"
-    slug_field = "slug"
-    slug_url_kwarg = "slug"
-
-
-@login_required
 def newsreport_detail(request, pk):
     report = get_object_or_404(NewsReport, pk=pk)
     if request.method != "POST":
@@ -132,9 +123,8 @@ def create_report(request):
     if request.method == 'POST':
         form = NewsReportForm(request.POST, request.FILES)
         if form.is_valid():
-            news_report = form.save(commit=True)
+            form.save(commit=True)
             # is_approved remains False by default
-            news_report.save()
             return redirect('homepage')  # Change to your homepage url name
     else:
         form = NewsReportForm()
@@ -177,7 +167,7 @@ class BSReportUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class BSReportDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = NewsReport
     form_class = NewsReportForm
-    success_url = 'homepage' 
+    success_url = 'homepage'
 
     @login_required
     def test_func3(self):
@@ -270,6 +260,21 @@ class NewsViewSet(viewsets.ModelViewSet):
     serializer_class = NewsSerializer
 
 
+class NewsReportDetailView(DetailView):
+    model = NewsReport
+    template_name = 'report_detail.html'
+    context_object_name = 'report'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+
+    @login_required
+    def get_object(self, queryset=None):
+        slug = self.kwargs.get(self.slug_url_kwarg)
+        queryset = queryset or self.get_queryset()
+        return get_object_or_404(queryset, **{self.slug_field: slug})
+
+
+"""
 logger = logging.getLogger(__name__)
 
 
@@ -278,3 +283,4 @@ def my_view(request):
     logger.info("This is an info message")
     logger.warning("This is a warning message")
     logger.error("This is an error message")
+"""

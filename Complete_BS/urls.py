@@ -29,6 +29,7 @@ from users.forms import NewPasswordChangeForm
 from Content.urls import urlpatterns as urls
 from Content import forms
 from Content.views import home, homepage, policies
+from users.views import UserCreateView
 
 
 urlpatterns = [
@@ -40,10 +41,8 @@ urlpatterns = [
     path('/', include('Content.urls')),
 #    path('__debug__/', include('debug_toolbar.urls')),
     path('users/register', user_views.register, name='register'),
- #   path('users/profile', user_views.profile, name='profile'),
-#    path('users/register_profile', user_views.register_profile,
-#         name='register_profile'),
-#    path('users/logout_view', user_views.logout_view, name='logout'),
+    path('users/registration', UserCreateView.as_view(
+        template_name='registration.html'), name='registration'),
     path('login',
          auth_views.LoginView.as_view(template_name='Content/login.html'),
          name='login'),

@@ -4,8 +4,12 @@ babel==2.17.0
 certifi==2025.6.15
 charset-normalizer==3.4.2
 crispy-bootstrap5==2025.6
-Django==5.1.11
+Django==5.2.3
 django-crispy-forms==2.4
+django-debug-toolbar==5.2.0
+django-tinymce==4.1.0
+django-widget-tweaks==1.5.0
+djangorestframework==3.16.0
 docutils==0.21.2
 idna==3.10
 imagesize==1.4.1
@@ -13,6 +17,7 @@ Jinja2==3.1.6
 MarkupSafe==3.0.2
 packaging==25.0
 pillow==11.2.1
+psycopg2-binary==2.9.10
 Pygments==2.19.2
 requests==2.32.4
 roman-numerals-py==3.1.0
