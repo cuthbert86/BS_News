@@ -1,22 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Author
 from .forms import UserRegisterForm
 from .forms import LoginForm, UserUpdateForm
 from django.contrib.auth import authenticate, login, logout
-from django.db.models.signals import pre_save, post_save, post_migrate
-from django.dispatch import receiver
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.views.generic import DeleteView, FormView
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import Context
-from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse_lazy
 
 
@@ -57,17 +49,17 @@ def logout_view(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            return redirect('itreporting:home')
+            return redirect('home')
 
         else:
             messages.warning(request, 'Unable to create account.')
     else:
-        form = UserCreationForm()
+        form = UserRegisterForm()
     return render(request, 'Content/register.html', {'form': form, 'title': 'Registration'})
 
 

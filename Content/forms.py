@@ -49,21 +49,6 @@ class ContactForm(forms.ModelForm):
 
 
 class NewsReportForm(forms.ModelForm):
-    headline = forms.CharField(label='Headline')
-    content = forms.Textarea()
-    photo = forms.ImageField(label='upload photo')
-
     class Meta:
         model = NewsReport
         fields = ['headline', 'content', 'photo']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout()
-        Fieldset(
-            'headline',
-            'content',
-            'photo',
-            ),
-        Submit('submit', 'Submit', css_class='button white')

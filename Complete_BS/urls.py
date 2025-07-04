@@ -38,6 +38,8 @@ urlpatterns = [
     path('policies', policies, name='policies'),
     path('/', include('Content.urls')),
 #    path('__debug__/', include('debug_toolbar.urls')),
+    path('users/register', user_views.register, name='register'),
+    path('users/profile', user_views.profile, name='profile'),
     path('login',
          auth_views.LoginView.as_view(template_name='Content/login.html'),
          name='login'),

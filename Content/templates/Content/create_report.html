@@ -14,6 +14,8 @@
             <fieldset class="form-group">
             <legend class="border-bottom mb-4">Create BS News Report</legend>
             {{ form.as_p }}
+            {{ report.headline }}
+            {{ report.content }}
             </fieldset>
             <div class="form-group">
             <button class="btn btn-outline-info" type="submit">Send</button>
@@ -25,5 +27,4 @@
     </div>
 </div>
 
-</body>
 {% endblock content %}

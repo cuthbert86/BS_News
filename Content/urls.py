@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from Content.views import homepage, report_detail
 from Content.views import success, NewsReportDetailView, send_mail1
 from Content.views import BSReportDeleteView, BSReportUpdateView, about_BS
-from Content.views import ContactCreateView, create_report, report_list
+from Content.views import ContactCreateView, CreateReport, report_list
 from Content.views import EditNewsReportView, NewsViewSet
 from Content import views
 from Content.models import NewsReport
@@ -27,9 +27,9 @@ urlpatterns = [
     path('Content/about_BS', about_BS, name='about_BS'),
     path('Content/BS_delete_report', BSReportDeleteView.as_view(
         template_name='BS_delete_report.html'), name='BS_delete_report'),
-    path('Content/contact_create', ContactCreateView.as_view(
+    path('Content/ContactCreateView', ContactCreateView.as_view(
         template_name='contact_create.html'), name='contact_create'),
-    path('Content/create_report', create_report, name='create_report'),
+    path('Content/create_report', CreateReport.as_view(), name='create_report'),
     path('Content/report_list', report_list, name='report_list'),
     path("Content/<slug:slug>/", NewsReportDetailView.as_view,
          name="news_report_detail"),

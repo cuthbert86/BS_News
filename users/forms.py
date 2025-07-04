@@ -3,23 +3,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.contrib.auth.forms import AdminUserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from .models import Author
-
-
-class CustomUserCreationForm(AdminUserCreationForm):
-    class Meta:
-        model = Author
-        fields = ("first_name", "last_name", "email")
-
-
-class CustomUserChangeForm(UserChangeForm):
-    class Meta:
-        model = Author
-        fields = ("first_name", "last_name", "email")
 
 
 class UserRegisterForm(UserCreationForm):
@@ -32,12 +20,12 @@ class UserRegisterForm(UserCreationForm):
                   'password1', 'password2']
 
 
-class UserUpdateForm(forms.ModelForm):
+class UserUpdateForm(ModelForm):
     email = forms.EmailField()
 
     class Meta:
-        model = User
-        fields = ['email']
+        model = Author
+        fields = '__all__'
 
 
 class NewPasswordChangeForm(PasswordChangeForm):

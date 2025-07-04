@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView
 from django.views.generic import DeleteView, FormView
 from django.template.loader import get_template
 from django.template import Context
@@ -13,12 +13,11 @@ import requests
 from django.core.mail import send_mail
 from users.models import Author
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic.edit import DeleteView, UpdateView
+from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from .forms import NewsReportForm, ContactForm, EditNewsReportForm
 from Complete_BS import settings
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.views import generic
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
 from rest_framework import viewsets
@@ -117,28 +116,14 @@ def success(request):
     return render(request, 'Content/success.html')
 
 
-@login_required
-def create_report(request):
-    if request.method == 'POST':
-        form = NewsReportForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save(commit=True)
-            # is_approved remains False by default
-            return redirect('homepage')  # Change to your homepage url name
-    else:
-        form = NewsReportForm()
-    return render(request, 'Content/create_report.html', {'form': form})
+class CreateReport(CreateView):
+    # specify the model for create view
+    model = NewsReport
+    # specify the fields to be displayed
+    fields = ['headline', 'content']
+    template_name = 'Content/create_report.html'
+    success_url = 'homepage'
 
-
-@login_required
-def new_report(request):
-    form = NewsReportForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        form.save()
-        return redirect('homepage')
-    else:
-        form = NewsReportForm()
-    return render(request, 'Content/create_report.html', {'form': form})
 
 
 def about_BS(request):

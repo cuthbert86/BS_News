@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Model
 from users.models import Author
@@ -16,9 +17,10 @@ from PIL import Image
 class NewsReport(models.Model):
     headline = models.TextField(primary_key=True, max_length=100, default='')
     todaysDate = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(to=Author, on_delete=models.PROTECT, default='')
+    user = models.ForeignKey(
+        User, on_delete=models.PROTECT, default='', blank=True)
     content = models.TextField(max_length=500, default='')
-    photo = models.ImageField(upload_to='media/photo', default='')
+    photo = models.ImageField(upload_to='media/photo', blank=True)
     is_approved = models.BooleanField(default=True)
     slug = models.SlugField(max_length=100, null=True, blank=True, unique=True)
 
@@ -34,6 +36,7 @@ class NewsReport(models.Model):
         value = self.headline
         self.slug = slugify(value, allow_unicode=True)
         super().save(*args, **kwargs)
+
 
 """
 @receiver(pre_save, sender=NewsReport)
