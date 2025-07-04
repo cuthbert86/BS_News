@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.urls import path, include, reverse_lazy, re_path, reverse
 from users import views as user_views
 from django.contrib.auth.models import User
@@ -39,5 +38,5 @@ urlpatterns = [
     path('Content/EditNewsReportView', EditNewsReportView.as_view(
         template_name='edit_report.html'), name='edit_report'),
     re_path('Content/<slug:slug>/', report_detail, name='report_detail'),
-]
+    ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

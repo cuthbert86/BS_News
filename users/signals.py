@@ -8,12 +8,14 @@ from Content.models import NewsReport, LatestNews
 from django.contrib.auth import get_user_model
 
 
+"""
 @receiver(post_migrate)
 def create_superuser(sender, **kwargs):
     Author = get_user_model()
     if not Author.objects.filter(username='CuthbertBaines').exists():
         Author.objects.create_superuser(
             'CuthbertBaines', 'cuthbert.corp@gmail.com', 'Burngreave1986')
+"""
 
 
 @receiver(post_save, sender=Author)
@@ -40,5 +42,5 @@ def notify_admin_new_report(sender, instance, created, **kwargs):
     if created:
         mail_admins(
             subject="New Report Submitted",
-            message=f"A new report (ID: {instance.self}) has been submitted by {instance.username} and is awaiting approval."
+            message=f"A new report (ID: {instance.slug}) has been submitted by {instance.username} and is awaiting approval."
         )

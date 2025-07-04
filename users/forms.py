@@ -24,6 +24,10 @@ class UserRegisterForm(UserCreationForm):
 
 
 class NewPasswordChangeForm(PasswordChangeForm, LoginRequiredMixin):
+    class Meta:
+        model = User
+        fields = ['username', 'name', 'password1', 'password2']
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()

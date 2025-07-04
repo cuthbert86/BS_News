@@ -11,8 +11,7 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from Complete_BS.utils import unique_slug_generator, unique_slug_generator1
 from django.utils.text import slugify
-# from serializers import NewsSerializer
-# from PIL import Image
+from PIL import Image
 
 
 class NewsReport(models.Model):
@@ -47,8 +46,7 @@ def pre_save_receiver(sender, instance, *args, **kwargs):
 class LatestNews(models.Model):
     title = models.CharField(primary_key=True, max_length=100, default='')
     Date = models.DateField(auto_now_add=True)
-    reporter = models.ForeignKey(
-        User, on_delete=models.CASCADE)
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=500, default='')
     photo = models.ImageField(upload_to='media/photo', default='busgate.jpg')
     is_approved = models.BooleanField(default=True)
@@ -60,9 +58,6 @@ class LatestNews(models.Model):
 
     def __str__(self):
         return f'{self.title}'
-
-    class Meta:
-        get_latest_by = "Date"
 
 
 @receiver(pre_save, sender=LatestNews)

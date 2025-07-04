@@ -11,13 +11,6 @@ from django.core.mail import send_mail
 
 
 @login_required
-class NewsReportForm(forms.ModelForm):
-    class Meta:
-        model = NewsReport
-        fields = ['headline', 'content', 'photo']
-
-
-@login_required
 class EditNewsReportForm(forms.ModelForm):
     model = NewsReport
     fields = "__all__"
@@ -51,5 +44,22 @@ class ContactForm(forms.ModelForm):
             'name',
             'message',
             'email',
+            ),
+        Submit('submit', 'Submit', css_class='button white')
+
+
+@login_required
+class NewsReportForm(forms.ModelForm):
+    model = NewsReport
+    fields = ['headline', 'content', 'photo']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout()
+        Fieldset(
+            'headline',
+            'content',
+            'photo',
             ),
         Submit('submit', 'Submit', css_class='button white')

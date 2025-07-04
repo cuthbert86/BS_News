@@ -141,6 +141,17 @@ def create_report(request):
     return render(request, 'Content/create_report.html', {'form': form})
 
 
+@login_required
+def new_report(request):
+    form = NewsReportForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        return redirect('homepage')
+    else:
+        form = NewsReportForm()
+    return render(request, 'Content/create_report.html', {'form': form})
+
+
 def about_BS(request):
     return render(request, 'Content/about_BS.html',
                   {'title': 'Start Learning About BS News'})
@@ -166,7 +177,7 @@ class BSReportUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class BSReportDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = NewsReport
     form_class = NewsReportForm
-    success_url = 'homepage'
+    success_url = 'homepage' 
 
     @login_required
     def test_func3(self):
@@ -180,7 +191,7 @@ class ContactCreateView(CreateView, FormView):
     success_url = 'success'
     template_name = 'Content/contact_create.html'
     context = {'form': form}
-    
+
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -240,7 +251,8 @@ def report_detail(request, slug):
     q = NewsReport.objects.filter(slug__iexact=slug)
 
     if q.exists():
-        # If a post with the given slug exists, retrieve the first matching post
+            # If a post with the given slug exists, retrieve the first
+            # matching post
         q = q.first()
     else:
         # If no post is found, return an "Post Not Found" response

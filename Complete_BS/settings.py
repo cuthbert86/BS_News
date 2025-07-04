@@ -84,6 +84,10 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -98,13 +102,27 @@ WSGI_APPLICATION = 'Complete_BS.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+   'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }}
+
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mydb',
+        'USER': 'CuthbertBaines',
+        'PASSWORD': 'Burngreave1986',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'CONN_MAX_AGE': 60,
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
-
-
+"""
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -153,7 +171,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = 'Content:homepage'
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-INTERNAL_IPS = ['128.0.0.1']
+INTERNAL_IPS = ['127.0.0.1']
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
@@ -164,7 +182,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'height': 360,
     'width': '100%',
     'plugins':
-        'advlist autolink lists link image charmap print preview anchor',
+    'advlist autolink lists link image charmap print preview anchor',
     'toolbar': 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image',
     }
 
@@ -175,12 +193,12 @@ LOGGING = {
     'handlers': {
         'console': {
                 'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
+                },
+                },
+        'loggers': {
         'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
+        'handlers': ['console'],
+        'level': 'INFO',
         },
         'myapp': {
             'handlers': ['console'],

@@ -27,7 +27,7 @@ from Content import views as Content_views
 # from BS_News.urls import urlpatterns as urls
 from users.forms import NewPasswordChangeForm
 from Content.urls import urlpatterns as urls
-# from Content import forms
+from Content import forms
 from Content.views import home, homepage, policies
 
 
@@ -50,6 +50,18 @@ urlpatterns = [
     path('logout/',
          auth_views.LogoutView.as_view(template_name='Content/logout.html'),
          name='logout'),
+    path("admin/password_reset/", auth_views.PasswordResetView.as_view(
+        extra_context={"site_header": admin.site.site_header}
+    ), name="admin_password_reset"),
+    path("admin/password_reset/done/", auth_views.PasswordResetDoneView.
+         as_view(extra_context={"site_header": admin.site.site_header}),
+         name="password_reset_done"),
+    path("reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.
+         as_view(extra_context={"site_header": admin.site.site_header}),
+         name="password_reset_confirm"),
+    path("reset/done/", auth_views.PasswordResetCompleteView.as_view(
+        extra_context={"site_header": admin.site.site_header}),
+         name="password_reset_complete"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
