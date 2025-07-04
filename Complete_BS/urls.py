@@ -25,11 +25,9 @@ from Content import views as Content_views
 # from Content.views import send_mail
 # from BS_News import views as BS_news
 # from BS_News.urls import urlpatterns as urls
-from users.forms import NewPasswordChangeForm
 from Content.urls import urlpatterns as urls
 from Content import forms
 from Content.views import home, homepage, policies
-from users.views import UserCreateView
 
 
 urlpatterns = [
@@ -40,9 +38,6 @@ urlpatterns = [
     path('policies', policies, name='policies'),
     path('/', include('Content.urls')),
 #    path('__debug__/', include('debug_toolbar.urls')),
-    path('users/register', user_views.register, name='register'),
-    path('users/registration', UserCreateView.as_view(
-        template_name='registration.html'), name='registration'),
     path('login',
          auth_views.LoginView.as_view(template_name='Content/login.html'),
          name='login'),

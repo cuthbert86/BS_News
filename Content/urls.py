@@ -1,6 +1,5 @@
 from django.urls import path, include, reverse_lazy, re_path, reverse
 from users import views as user_views
-from django.contrib.auth.models import User
 from django.contrib.auth import views as auth_views
 from Content.views import homepage, report_detail
 from Content.views import success, NewsReportDetailView, send_mail1
@@ -13,6 +12,7 @@ from rest_framework.routers import DefaultRouter
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
+from users.models import Author
 
 
 app_name = "Content"

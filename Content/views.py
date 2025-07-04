@@ -15,7 +15,6 @@ from users.models import Author
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import DeleteView, UpdateView
 from .forms import NewsReportForm, ContactForm, EditNewsReportForm
-from django.contrib.auth.models import User
 from Complete_BS import settings
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -182,6 +181,7 @@ class ContactCreateView(CreateView, FormView):
     template_name = 'Content/contact_create.html'
     context = {'form': form}
 
+    @login_required
     def form_valid(self, form):
         return super().form_valid(form)
 

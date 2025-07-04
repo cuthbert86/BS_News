@@ -1,22 +1,12 @@
-{% extends "itreporting/base.html" %}
+{% extends "Content/Base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
 {% block content %}
-{% load crispy_forms_tags %}
-<div class="content-section">
-    <div class="media-body">
-    <h2 class="account-heading">{{ user.profile }}</h2>
-    <p class="text-secondary">{{ user.username }}</p>
-    <p class="text-secondary">{{ user.email }}</p>
-    </div>
-    </div>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <fieldset class="form-group">
-        <legend class="border-bottom mb-4">Profile Details</legend>
-        
-        </fieldset>
-        <div class="form-group">
-        <button class="btn btn-outline-info" type="submit">Update</button>
-        </div>
-    </form>
-    </div>
-{% endblock content %}
+<h2>{{title}}</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form }}
+  <button type="submit">Sign Up</button>
+</form>
+{% endblock %}

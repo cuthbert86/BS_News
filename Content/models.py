@@ -1,6 +1,5 @@
 from django.db import models
 from django.db.models import Model
-from django.contrib.auth.models import User
 from users.models import Author
 from datetime import datetime
 from django.conf import settings
@@ -17,7 +16,7 @@ from PIL import Image
 class NewsReport(models.Model):
     headline = models.TextField(primary_key=True, max_length=100, default='')
     todaysDate = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, default='')
+    user = models.ForeignKey(to=Author, on_delete=models.PROTECT, default='')
     content = models.TextField(max_length=500, default='')
     photo = models.ImageField(upload_to='media/photo', default='')
     is_approved = models.BooleanField(default=True)
@@ -47,7 +46,7 @@ def pre_save_receiver(sender, instance, *args, **kwargs):
 class LatestNews(models.Model):
     title = models.CharField(primary_key=True, max_length=100, default='')
     Date = models.DateField(auto_now_add=True)
-    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=Author, on_delete=models.PROTECT, default='')
     content = models.TextField(max_length=500, default='')
     photo = models.ImageField(upload_to='media/photo', default='busgate.jpg')
     is_approved = models.BooleanField(default=True)
